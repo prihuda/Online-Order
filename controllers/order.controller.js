@@ -41,8 +41,14 @@ exports.findAll = (req, res) => {
 			{
 					model: OrderItem,
 					as: 'order_detail',
+					attributes: {
+						exclude: ['id', 'order_id']
+					}
 			},
-		]
+		],
+		attributes: {
+			exclude: ['createdAt', 'updatedAt']
+		}
 	})
     .then(data => {
       res.send({
@@ -63,7 +69,20 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Order.findByPk(id)
+  Order.findByPk(id, {
+		include: [
+			{
+					model: OrderItem,
+					as: 'order_detail',
+					attributes: {
+						exclude: ['id', 'order_id']
+					}
+			},
+		],
+		attributes: {
+			exclude: ['createdAt', 'updatedAt']
+		}
+	})
     .then(data => {
       res.send({
         message: "success retrieve data",
