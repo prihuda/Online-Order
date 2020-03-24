@@ -1,4 +1,4 @@
-const { Order } = require('../database/models');
+const { Order, OrderItem } = require('../database/models');
 
 // Create and Save a new Order
 exports.create = (req, res) => {
@@ -36,7 +36,14 @@ exports.create = (req, res) => {
 
 // Retrieve all Orders from the database.
 exports.findAll = (req, res) => {
-  Order.findAll()
+  Order.findAll({
+		include: [
+			{
+					model: OrderItem,
+					as: 'order_detail',
+			},
+		]
+	})
     .then(data => {
       res.send({
         message: "success retrieve data",

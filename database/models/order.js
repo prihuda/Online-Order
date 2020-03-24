@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   Order.associate = function(models) {
 		Order.hasMany(models.OrderItem, {
 			foreignKey: 'order_id',
+			as: 'order_detail',
 			onDelete: 'CASCADE'
 		});
     Order.belongsTo(models.Customer, {
