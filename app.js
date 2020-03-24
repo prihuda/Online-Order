@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const sequelize = require('../database/config/database')
+const CONFIG = require('./database/config/database');
 
 const app = express();
 
@@ -25,7 +25,7 @@ require("./routes/orderitem.routes")(app);
 
 const db = require("./database/models");
 
-db.sequelize.sync();
+db.sequelize.sync({force: true});
 
 // drop the table if it already exists
 /* db.sequelize.sync({ force: true }).then(() => {
@@ -36,6 +36,14 @@ db.sequelize.sync();
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Online Shopping application." });
 });
+
+// if (CONFIG.app==='dev') {
+//   //creates table if they do not already exist
+//   //models.sequelize.sync();
+//
+//   //deletes all tables then recreates them useful for testing and development purposes
+//   db.sequelize.sync({force: true});
+// }
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

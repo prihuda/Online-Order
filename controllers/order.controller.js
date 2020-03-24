@@ -16,9 +16,16 @@ exports.create = (req, res) => {
     driver_id: req.body.data.attributes.driver_id,
     published: req.body.data.attributes.published ? req.body.published : false
   };
+	const items = req.body.data.attributes.order_detail;
 
   // Save Order in the database
+	
   Order.create(order)
+	.then(function(order) {
+		for (i in items) {
+			order.createOrder_detail(items[i])
+		}
+	})
     .then(data => {
       res.send({
         message: "success retrieve data",
