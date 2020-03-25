@@ -35,7 +35,11 @@ exports.create = (req, res) => {
 
 // Retrieve all Drivers from the database.
 exports.findAll = (req, res) => {
-  Driver.findAll()
+  Driver.findAll({
+		attributes: {
+			exclude: ['createdAt', 'updatedAt']
+		}
+	})
     .then(data => {
       res.send({
         message: "success retrieve data",
@@ -55,7 +59,11 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Driver.findByPk(id)
+  Driver.findByPk(id, {
+		attributes: {
+			exclude: ['createdAt', 'updatedAt']
+		}
+	})
     .then(data => {
       res.send({
         message: "success retrieve data",

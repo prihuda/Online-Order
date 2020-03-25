@@ -35,7 +35,11 @@ exports.create = (req, res) => {
 
 // Retrieve all Products from the database.
 exports.findAll = (req, res) => {
-  Product.findAll()
+  Product.findAll({
+		attributes: {
+			exclude: ['createdAt', 'updatedAt']
+		}
+	})
     .then(data => {
       res.send({
         message: "success retrieve data",
@@ -55,7 +59,11 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Product.findByPk(id)
+  Product.findByPk(id, {
+		attributes: {
+			exclude: ['createdAt', 'updatedAt']
+		}
+	})
     .then(data => {
       res.send({
         message: "success retrieve data",

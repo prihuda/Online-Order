@@ -14,18 +14,33 @@ exports.create = (req, res) => {
   const order = {
     user_id: req.body.data.attributes.user_id,
     driver_id: req.body.data.attributes.driver_id,
-    published: req.body.data.attributes.published ? req.body.published : false
+    status: req.body.data.attributes.status
   };
 	const items = req.body.data.attributes.order_detail;
 
   // Save Order in the database
 	
   Order.create(order)
-	.then(function(order) {
-		for (i in items) {
-			order.createOrder_detail(items[i])
-		}
-	})
+		.then(async function(order) {
+			for (i in items) {
+				await order.createOrder_detail(items[i])
+			}
+			return order;
+		})
+		.then(data => {
+			return Order.findByPk(data.id, {
+				include: {
+					model: OrderItem,
+					as: 'order_detail',
+					attributes: {
+						exclude: ['id', 'order_id']
+					}
+				},
+				attributes: {
+					exclude: ['createdAt', 'updatedAt']
+				}
+			})
+		})
     .then(data => {
       res.send({
         message: "success retrieve data",
