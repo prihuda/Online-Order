@@ -25,7 +25,7 @@ require("./routes/orderitem.routes")(app);
 
 const db = require("./database/models");
 
-db.sequelize.sync({force: true});
+db.sequelize.sync();
 
 // drop the table if it already exists
 /* db.sequelize.sync({ force: true }).then(() => {
